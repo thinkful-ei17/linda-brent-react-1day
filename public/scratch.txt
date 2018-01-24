@@ -1,0 +1,38 @@
+setInterval(){
+  runs every second
+  this.setState --
+
+  state{
+    currentTimeLeft:1500 seconds
+    isPaused:false
+    isStarted:false
+  }
+}
+
+Parent PomodoroTimer.js
+Child Button
+Child Display
+
+if(this.state.isStarted && !this.state.isPaused){
+  start timer and decreasing timer
+}
+
+else if (this.state.isStarted && this.state.isPaused ){
+  render(
+    <div>
+    <Display text=paused>
+    <Button id=resume text=resume>
+    </div>
+  )
+}
+
+
+else {
+  start page
+}
+
+
+<childbutton start timer />
+<child button resume  />
+<childbutton pause />
+
