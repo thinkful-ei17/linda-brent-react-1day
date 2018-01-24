@@ -1,62 +1,63 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import Button from './Button';
 import Display from './Display';
-import ReactInterval from 'react-interval';
+//import ReactInterval from 'react-interval';
 
 class PomodoroTimer extends React.Component {
 constructor(props){
   super(props);
   this.state = {
     currentTimeLeft:1500,
-    countdownInterval:1000,
-    isPaused:false,
-    enabled:true,
+    enabled:false, 
     isCompleted:false
   }
 }
 
+//countdownInterval:1000,
+//isPaused:false,
+// updateTimeLeft(){
+//   let newCount = this.state.currentTimeLeft - 1;
+//   if(newCount >= 0){
+//   this.setState({currentTimeLeft:newCount})
+//   }
+//   else{
+//     this.setState({isCompleted:true})
+//   }
+// }
 
-updateTimeLeft(){
-  let newCount = this.state.currentTimeLeft - 1;
-  if(newCount >= 0){
-  this.setState({currentTimeLeft:newCount})
-  }
-  else{
-    this.setState({isCompleted:true})
-  }
-}
+dec1(){
+  const {currentTimeLeft, enabled} = this.state;
+  console.log('I am decreasing by 1');
+  this.setState({currentTimeLeft: currentTimeLeft - 1, enabled: !enabled});
+};
+
+onTogglePauseResume() {
+  const {enabled} = this.state;
+  console.log('onTogglePauseResume was called');
+
+  this.setState({enabled: !enabled});
+};
+
 
   render() {
 
-    if (this.state.enabled && this.state.isPaused) {
-    return (
-      <div className="App">
-      <Display text='Paused' />
-      <Button text='Resume Timer' />
-      </div>
-    )}
-    else if (this.state.enabled && !this.state.isPaused) {
+    const {currentTimeLeft, enabled} = this.state;
+
+  if (enabled) {
       return (
         <div className="App">
-          <Display text={this.state.currentTimeLeft - 1} />
-          <Button text='Pause Timer' />
+          <Display text={currentTimeLeft} />
+          <Button text='Pause Timer' hidden={!enabled} clickButton={() => this.onTogglePauseResume()}/>
+          <Button text='Resume Timer' hidden={enabled} clickButton={() => this.onTogglePauseResume()}/>
         </div>
       )
     }
-    else if (this.state.enabled && !this.state.isPaused && this.state.isCompleted) {
+  else {
       return (
         <div className="App">
-          <Display text={this.state.currentTimeLeft} />
-          <Button text='Start Timer' />
-        </div>
-      )
-    }
-    else {
-      return (
-        <div className="App">
-          <Display text='done'/>
-          <Button text='Start New Timer' />
+          <Display text={currentTimeLeft}/>
+          <Button text='Start Timer' clickButton={() => this.dec1()} />
         </div>
       )
     }
