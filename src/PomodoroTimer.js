@@ -8,16 +8,31 @@ class PomodoroTimer extends React.Component {
 constructor(props){
   super(props);
   this.state = {
-    currentTimeLeft:60,
+    currentTimeLeft:60, //default currentTimeLeft should equal same as default pomodorLength at Start
+    pomodoroLength:60,
+    breakLength:30, 
+    pomCount:0, 
+    breakCount:0, 
     enabled:false, 
     isCompleted:false,
-    timer: null
+    timer: null,
+    interval: 1
   }
 }
 
 padtwo(number){
   return (number < 10 ? '0' : '') + number
 };
+
+incrementPom(){
+  this.setState({pomCount: this.state.pomCount + 1});
+  console.log('incrementPom is', this.state.pomCount);
+}
+
+incrementBreak(){
+  this.setState({breakCount: this.state.breakCount + 1});
+  console.log('incrementBreak is', this.state.breakCount);
+}
 
 calcTime(){
   let minutes = Math.floor(this.state.currentTimeLeft/60);
@@ -28,9 +43,14 @@ calcTime(){
 };
 
 dec1(){
-  const {currentTimeLeft} = this.state;
+  const {currentTimeLeft, timer} = this.state;
+  if(currentTimeLeft === 1){
+    console.log('dec1 if statment triggered - currentTImeleft', currentTimeLeft);
+    this.setState({isCompleted: true});
+    clearInterval(timer);
+  }
   console.log('dec1 currentTime', this.state.currentTimeLeft);
-  this.setState({currentTimeLeft: currentTimeLeft - 10});
+  this.setState({currentTimeLeft: currentTimeLeft - this.state.interval});
 };
 
 onTogglePauseResume() {
@@ -52,9 +72,20 @@ onTogglePauseResume() {
 
   render() {
 
-    const {currentTimeLeft, enabled} = this.state;
-
-  if (currentTimeLeft < 60 && currentTimeLeft >= 1) {
+    const {currentTimeLeft, enabled, isCompleted, breakLength, pomodoroLength} = this.state;
+  //checks if currentTimeLeft is less than 00:00 (ie. -:01) then will start break time  
+  if (isCompleted){
+    console.log('render isCompleted went to break timer');
+    return (
+      <div className="App">
+        <Display text={this.calcTime()}/>
+        <Button id='break-timer' text='Break Timer' clickButton={() => {this.incrementBreak() ; this.setState({isCompleted: false, currentTimeLeft: breakLength, timer:setInterval(() => this.dec1(), 1000)}) }} />
+      </div>
+    )
+  }
+    //checks if currentTimeLeft is less than the starting time (ie. timer is for 25 minutes at 24:59 display Resume or Pause button)
+  else if (currentTimeLeft < pomodoroLength) {
+    console.log('elseIf is running');
       return (
         <div className="App">
           <Display text={this.calcTime()}/>
@@ -62,18 +93,12 @@ onTogglePauseResume() {
           </div>
       )
     }
-  else if (currentTimeLeft === 0){
-    return (
-      <div className="App">
-        <Display text={this.calcTime()}/>
-      </div>
-    )
-  }
   else {
+    console.log('Start timer is running');
       return (
         <div className="App">
           <Display text={this.calcTime()}/>
-          <Button id='start-timer' text='Start Timer' hidden='false' clickButton={() => this.setState({timer:setInterval(() => this.dec1(), 1000)})} />
+          <Button id='start-timer' text='Start Timer' clickButton={() => this.setState({timer:setInterval(() => this.dec1(), 1000)})} />
         </div>
       )
     }

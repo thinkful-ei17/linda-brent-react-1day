@@ -36,3 +36,15 @@ else {
 <child button resume  />
 <childbutton pause />
 
+start->timer hits 0. increment break count by 1. 
+start 5 min break timer->timer hits 0. increment break count by another 1.
+increment break count is equal to 4, then start 15 min break time -> timer hits 0
+Start process over
+
+pomodorolength:1500sec 
+breaklength:300sec 
+pomcount:0 
+breakcount:0 
+currenttimer:1500sec 
+enabled:false 
+iscompleted:false
