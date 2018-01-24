@@ -8,18 +8,29 @@ class PomodoroTimer extends React.Component {
 constructor(props){
   super(props);
   this.state = {
-    currentTimeLeft:1500,
+    currentTimeLeft:60,
     enabled:false, 
     isCompleted:false,
     timer: null
   }
 }
 
+padtwo(number){
+  return (number < 10 ? '0' : '') + number
+};
+
+calcTime(){
+  let minutes = Math.floor(this.state.currentTimeLeft/60);
+  //let seconds = this.state.currentTimeLeft % 60; alternative - does the same thing
+  let seconds = this.state.currentTimeLeft - minutes * 60;
+  let paddedSeconds = this.padtwo(seconds);
+  return minutes+':'+ paddedSeconds
+};
 
 dec1(){
   const {currentTimeLeft} = this.state;
-  console.log('I am decreasing by 1');
-  this.setState({currentTimeLeft: currentTimeLeft - 1});
+  console.log('dec1 currentTime', this.state.currentTimeLeft);
+  this.setState({currentTimeLeft: currentTimeLeft - 10});
 };
 
 onTogglePauseResume() {
@@ -43,18 +54,25 @@ onTogglePauseResume() {
 
     const {currentTimeLeft, enabled} = this.state;
 
-  if (currentTimeLeft<1500) {
+  if (currentTimeLeft < 60 && currentTimeLeft >= 1) {
       return (
         <div className="App">
-          <Display text={currentTimeLeft} />
+          <Display text={this.calcTime()}/>
           <Button text={enabled ? 'Resume' : 'Pause'} clickButton={() => this.onTogglePauseResume()}/>
           </div>
       )
     }
+  else if (currentTimeLeft === 0){
+    return (
+      <div className="App">
+        <Display text={this.calcTime()}/>
+      </div>
+    )
+  }
   else {
       return (
         <div className="App">
-          <Display text={currentTimeLeft}/>
+          <Display text={this.calcTime()}/>
           <Button id='start-timer' text='Start Timer' hidden='false' clickButton={() => this.setState({timer:setInterval(() => this.dec1(), 1000)})} />
         </div>
       )
