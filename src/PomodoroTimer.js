@@ -10,32 +10,31 @@ constructor(props){
   this.state = {
     currentTimeLeft:1500,
     enabled:false, 
-    isCompleted:false
+    isCompleted:false,
+    timer: null
   }
 }
 
-//countdownInterval:1000,
-//isPaused:false,
-// updateTimeLeft(){
-//   let newCount = this.state.currentTimeLeft - 1;
-//   if(newCount >= 0){
-//   this.setState({currentTimeLeft:newCount})
-//   }
-//   else{
-//     this.setState({isCompleted:true})
-//   }
-// }
 
 dec1(){
-  const {currentTimeLeft, enabled} = this.state;
+  const {currentTimeLeft} = this.state;
   console.log('I am decreasing by 1');
-  this.setState({currentTimeLeft: currentTimeLeft - 1, enabled: !enabled});
+  this.setState({currentTimeLeft: currentTimeLeft - 1});
 };
 
 onTogglePauseResume() {
-  const {enabled} = this.state;
-  console.log('onTogglePauseResume was called');
-
+  const {enabled, timer} = this.state;
+  if(!enabled) {
+    console.log('pausing timer')
+  clearInterval(timer);
+  }
+  else{
+    console.log('starting timer back up')
+    this.setState({
+      timer: setInterval(() => this.dec1(),1000
+    )
+  })
+}
   this.setState({enabled: !enabled});
 };
 
@@ -44,20 +43,19 @@ onTogglePauseResume() {
 
     const {currentTimeLeft, enabled} = this.state;
 
-  if (enabled) {
+  if (currentTimeLeft<1500) {
       return (
         <div className="App">
           <Display text={currentTimeLeft} />
-          <Button text='Pause Timer' hidden={!enabled} clickButton={() => this.onTogglePauseResume()}/>
-          <Button text='Resume Timer' hidden={enabled} clickButton={() => this.onTogglePauseResume()}/>
-        </div>
+          <Button text={enabled ? 'Resume' : 'Pause'} clickButton={() => this.onTogglePauseResume()}/>
+          </div>
       )
     }
   else {
       return (
         <div className="App">
           <Display text={currentTimeLeft}/>
-          <Button text='Start Timer' clickButton={() => this.dec1()} />
+          <Button id='start-timer' text='Start Timer' hidden='false' clickButton={() => this.setState({timer:setInterval(() => this.dec1(), 1000)})} />
         </div>
       )
     }
