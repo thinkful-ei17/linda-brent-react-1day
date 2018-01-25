@@ -72,7 +72,10 @@ timerChecker(){
 
 
 
+initialTimerStart() {
+  this.setState({ timerStarted: true, timerRunning:true, timer: setInterval(() => this.decrementTimer(), 1000) })
 
+};
 
 pauseTimer(){
   clearInterval(this.state.timer);
@@ -83,14 +86,11 @@ resumeTimer(){
 };
 
 handleButtonClicked() {
-  this.state.timerRunning ? this.resumeTimer() : this.pauseTimer();
+  this.state.timerRunning ? this.pauseTimer() : this.resumeTimer();
   this.setState({ timerRunning: !this.state.timerRunning });
 };
 
-initialTimerStart(){
-  this.setState({ timerStarted:true, timer: setInterval(() => this.decrementTimer(), 1000) })
-  
-}
+
 
 
   render() {
@@ -99,7 +99,7 @@ initialTimerStart(){
       return (
         <div className="App">
           <Display text={this.calculateSecondsToMinutes()} />
-          <Button text={this.state.timerRunning ? 'Resume' : 'Pause'} onClickButton={() => this.handleButtonClicked()} />
+          <Button text={this.state.timerRunning ? 'Pause':'Resume' } onClickButton={() => this.handleButtonClicked()} />
         </div>
       )
     }
