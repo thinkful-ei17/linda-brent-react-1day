@@ -1,50 +1,8 @@
-setInterval(){
-  runs every second
-  this.setState --
-
-  state{
-    currentTimeLeft:1500 seconds
-    isPaused:false
-    isStarted:false
-  }
-}
-
-Parent PomodoroTimer.js
-Child Button
-Child Display
-
-if(this.state.isStarted && !this.state.isPaused){
-  start timer and decreasing timer
-}
-
-else if (this.state.isStarted && this.state.isPaused ){
-  render(
-    <div>
-    <Display text=paused>
-    <Button id=resume text=resume>
-    </div>
-  )
-}
-
-
-else {
-  start page
-}
-
-
-<childbutton start timer />
-<child button resume  />
-<childbutton pause />
-
-start->timer hits 0. increment break count by 1. 
+start->timer hits 0. increment pomodoro count by 1. 
 start 5 min break timer->timer hits 0. increment break count by another 1.
-increment break count is equal to 4, then start 15 min break time -> timer hits 0
+if pomodoro count % 4 , then start 15 min break time -> timer hits 0
 Start process over
 
-pomodorolength:1500sec 
-breaklength:300sec 
-pomcount:0 
-breakcount:0 
-currenttimer:1500sec 
-enabled:false 
-iscompleted:false
+work on incrementing pom count and break count.
+render new text to show BREAK for break cycle.
+display where they are in the pom cycle??

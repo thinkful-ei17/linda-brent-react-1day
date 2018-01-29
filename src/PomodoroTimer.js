@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './index.css';
 import Button from './Button';
 import Display from './Display';
 
@@ -8,10 +8,10 @@ class PomodoroTimer extends React.Component {
 constructor(props){
   super(props);
   this.state = {
-    currentTimeLeft: 1500,
-    pomodoroLength: 1500,  
+    currentTimeLeft: 15,
+    pomodoroLength: 15,  
     pomodoroCount:0, 
-    breakLength: 300,
+    breakLength: 3,
     breakCount:0, 
     timerStarted:false,
     timerRunning:false, 
